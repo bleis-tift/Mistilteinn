@@ -1,0 +1,6 @@
+Thumbs.db
+obj/
+build/
+[Bb]in
+*.suo
+*.user

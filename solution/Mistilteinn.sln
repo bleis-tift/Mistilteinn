@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mistilteinn", "Mistilteinn\Mistilteinn.csproj", "{D41B1031-8B70-492A-8FDE-F8E01458DCCC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mistilteinn.Tests", "Mistilteinn.Tests\Mistilteinn.Tests.csproj", "{1F294260-A443-451F-98EF-3F1BAC9891F0}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D41B1031-8B70-492A-8FDE-F8E01458DCCC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D41B1031-8B70-492A-8FDE-F8E01458DCCC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D41B1031-8B70-492A-8FDE-F8E01458DCCC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D41B1031-8B70-492A-8FDE-F8E01458DCCC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1F294260-A443-451F-98EF-3F1BAC9891F0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1F294260-A443-451F-98EF-3F1BAC9891F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1F294260-A443-451F-98EF-3F1BAC9891F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1F294260-A443-451F-98EF-3F1BAC9891F0}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
