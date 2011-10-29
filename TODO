@@ -1,0 +1,15 @@
+- 前回の非git-nowコミットからのリビジョングラフを表示
+  選択してresetなども可能
+  resetする前に、tagが付いていなければtagを付ける
+  fixupボタンを押したときに派生ブランチのタグは削除
+- masterizeボタンを押すとgit-master
+- ticket listボタンを押すとRedmineのopenチケットを一覧
+  Redmineのすべてのプロジェクトではなく、特定プロジェクトのみ
+  コンテキストメニューを拡張するなどして、Git-Hooks用のブランチを簡単に作れる仕組みも
+- ビルド後に自動でテストを実行
+- private buildの実行
+- pull
+- private buildの結果の通知
+- 各機能の個別のon/offと
+- 設定画面と設定ファイル
+
