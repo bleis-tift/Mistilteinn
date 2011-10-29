@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.IO;
+using System.Diagnostics;
+using System.Windows.Forms;
 
 namespace Mistilteinn
 {
@@ -10,7 +12,39 @@ namespace Mistilteinn
     {
         public static void GitNow(string solutionPath)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var gitRepos = GetRepos(solutionPath);
+                Git("now --compact", gitRepos);
+            }
+            catch (GitUtilException e)
+            {
+#if DEBUG
+                MessageBox.Show(e.Message, "oops!");
+#endif
+            }
+        }
+
+        private static void Git(string gitArg, string gitRepos)
+        {
+            var info = new ProcessStartInfo("git", gitArg)
+            {
+                WorkingDirectory = gitRepos,
+                RedirectStandardError = true,
+                CreateNoWindow = true,
+                UseShellExecute = false
+            };
+            using (var proc = Process.Start(info))
+            {
+                var err = proc.StandardError.ReadToEnd();
+                proc.WaitForExit();
+                if (proc.ExitCode != 0 && err != "")
+                {
+#if DEBUG
+                    MessageBox.Show(err, "git command output error.");
+#endif
+                }
+            }
         }
 
         public static string GetRepos(string path)
