@@ -90,7 +90,7 @@ namespace Mistilteinn
             // Fixupメソッドで開いたコミットメッセージを閉じるときに、実際にfixupする
             docEvent.DocumentClosing += doc =>
             {
-                if (doc.FullName == GitUtil.GetCommitMessagePath(dte.Solution.FullName)) 
+                if (doc.FullName == GitUtil.GetCommitMessagePath(dte.Solution.FullName))
                 {
                     GitUtil.DoGitNowFixup(dte.Solution.FullName);
                 }

@@ -10,12 +10,16 @@ namespace Mistilteinn
 {
     public static class GitUtil
     {
-        public static void DoGitNow(string solutionPath)
+        public static void DoGitNow(string solutionPath) { DoGit("now --compact", solutionPath); }
+
+        public static void DoGitNowFixup(string solutionPath) { DoGit("now --fixup .git/COMMIT_EDITMSG", solutionPath); }
+
+        static void DoGit(string gitArg, string solutionPath)
         {
             try
             {
                 var gitRepos = GetRepos(solutionPath);
-                Git("now --compact", gitRepos);
+                DoGitImpl(gitArg, gitRepos);
             }
             catch (GitUtilException e)
             {
@@ -25,22 +29,7 @@ namespace Mistilteinn
             }
         }
 
-        public static void DoGitNowFixup(string solutionPath)
-        {
-            try
-            {
-                var gitRepos = GetRepos(solutionPath);
-                Git("now --fixup .git/COMMIT_EDITMSG", gitRepos);
-            }
-            catch (GitUtilException e)
-            {
-#if DEBUG
-                MessageBox.Show(e.Message, "oops!");
-#endif
-            }
-        }
-
-        private static void Git(string gitArg, string gitRepos)
+        static void DoGitImpl(string gitArg, string gitRepos)
         {
             var info = new ProcessStartInfo("git", gitArg)
             {
