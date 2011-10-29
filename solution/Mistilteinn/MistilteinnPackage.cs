@@ -84,7 +84,7 @@ namespace Mistilteinn
 
                 dte.Solution.SaveAs(sol);
                 doc.ProjectItem.ContainingProject.Save();
-                GitUtil.GitNow(sol);
+                GitUtil.DoGitNow(sol);
             };
             // Fixupメソッドと対になるイベントハンドラ
             // Fixupメソッドで開いたコミットメッセージを閉じるときに、実際にfixupする

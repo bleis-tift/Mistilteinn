@@ -10,7 +10,7 @@ namespace Mistilteinn
 {
     public static class GitUtil
     {
-        public static void GitNow(string solutionPath)
+        public static void DoGitNow(string solutionPath)
         {
             try
             {
