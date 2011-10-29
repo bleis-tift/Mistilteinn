@@ -75,7 +75,13 @@ namespace Mistilteinn
 
             dte = GetService<DTE, DTE>();
             docEvent = dte.Events.DocumentEvents;
-            docEvent.DocumentSaved += _ => GitUtil.GitNow(dte.Solution.FullName);
+            docEvent.DocumentSaved += doc =>
+            {
+                var sol = dte.Solution.FullName;
+                dte.Solution.SaveAs(sol);
+                doc.ProjectItem.ContainingProject.Save();
+                GitUtil.GitNow(sol);
+            };
 
             // Add our command handlers for menu (commands must exist in the .vsct file)
             var mcs = GetService<IMenuCommandService, OleMenuCommandService>();
