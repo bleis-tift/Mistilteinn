@@ -49,8 +49,8 @@
       <Menu guid="guidIDEToolbarCmdSet" id="Toolbar" type="Toolbar">
         <CommandFlag>DefaultDocked</CommandFlag>
         <Strings>
-          <ButtonText>Test Toolbar</ButtonText>
-          <CommandName>Test Toolbar</CommandName>
+          <ButtonText>Mistilteinn</ButtonText>
+          <CommandName>Mistilteinn</CommandName>
         </Strings>
       </Menu>
     </Menus>
