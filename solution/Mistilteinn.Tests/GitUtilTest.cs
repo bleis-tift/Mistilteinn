@@ -11,12 +11,8 @@ namespace Mistilteinn.Tests
     [TestFixture]
     public class GitUtilTest
     {
-        static string _(string path)
-        {
-            return Path.GetFullPath(path);
-        }
-
-        public class GetGitRepos
+        [SetUpFixture]
+        public class SetUpFixture
         {
             [SetUp]
             public void SetUp()
@@ -26,9 +22,17 @@ namespace Mistilteinn.Tests
                     Directory.CreateDirectory(@".\.git");
                 }
             }
+        }
 
-            static readonly string Root = new DirectoryInfo(".").FullName;
+        static string _(string path)
+        {
+            return Path.GetFullPath(path);
+        }
 
+        static readonly string Root = new DirectoryInfo(".").FullName;
+
+        public class GetGitRepos
+        {
             [Test]
             public void 指定ファイルと同じ場所にGitのリポジトリがある場合_指定ファイルが含まれるディレクトリのパスが返る()
             {
@@ -47,6 +51,15 @@ namespace Mistilteinn.Tests
             public void 指定ファイルの上の階層にGitのリポジトリが無い場合_例外()
             {
                 Assert.That(() => GitUtil.GetRepos(@"C:\test.sln"), Throws.TypeOf<GitUtilException>());
+            }
+        }
+
+        public class GetCommitMessageFile
+        {
+            [Test]
+            public void コミットメッセージのパスを取得できる()
+            {
+                Assert.That(GitUtil.GetCommitMessagePath(_(@".\test.sln")), Is.EqualTo(Path.Combine(Root, @".git\COMMIT_EDITMSG")));
             }
         }
     }

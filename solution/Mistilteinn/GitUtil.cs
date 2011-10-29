@@ -25,6 +25,21 @@ namespace Mistilteinn
             }
         }
 
+        public static void DoGitNowFixup(string solutionPath)
+        {
+            try
+            {
+                var gitRepos = GetRepos(solutionPath);
+                Git("now --fixup .git/COMMIT_EDITMSG", gitRepos);
+            }
+            catch (GitUtilException e)
+            {
+#if DEBUG
+                MessageBox.Show(e.Message, "oops!");
+#endif
+            }
+        }
+
         private static void Git(string gitArg, string gitRepos)
         {
             var info = new ProcessStartInfo("git", gitArg)
@@ -57,6 +72,11 @@ namespace Mistilteinn
                     throw GitUtilException.NotFound(Path.GetDirectoryName(path));
             }
             return Path.Combine(crnt);
+        }
+
+        public static string GetCommitMessagePath(string path)
+        {
+            return Path.Combine(GetRepos(path), ".git", "COMMIT_EDITMSG");
         }
     }
 

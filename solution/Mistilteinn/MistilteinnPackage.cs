@@ -9,6 +9,7 @@ using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.OLE.Interop;
 using Microsoft.VisualStudio.Shell;
 using EnvDTE;
+using System.IO;
 
 namespace Mistilteinn
 {
@@ -78,9 +79,21 @@ namespace Mistilteinn
             docEvent.DocumentSaved += doc =>
             {
                 var sol = dte.Solution.FullName;
+                if (doc.FullName == GitUtil.GetCommitMessagePath(sol))
+                    return;
+
                 dte.Solution.SaveAs(sol);
                 doc.ProjectItem.ContainingProject.Save();
                 GitUtil.GitNow(sol);
+            };
+            // Fixupメソッドと対になるイベントハンドラ
+            // Fixupメソッドで開いたコミットメッセージを閉じるときに、実際にfixupする
+            docEvent.DocumentClosing += doc =>
+            {
+                if (doc.FullName == GitUtil.GetCommitMessagePath(dte.Solution.FullName)) 
+                {
+                    GitUtil.DoGitNowFixup(dte.Solution.FullName);
+                }
             };
 
             // Add our command handlers for menu (commands must exist in the .vsct file)
@@ -88,12 +101,22 @@ namespace Mistilteinn
             if ( null != mcs )
             {
                 // Create the command for the menu item.
-                AddMenuCommand(mcs, PkgCmdIDList.cmdidFixup, MenuItemCallback);
+                AddMenuCommand(mcs, PkgCmdIDList.cmdidFixup, (_, __) => Fixup());
                 AddMenuCommand(mcs, PkgCmdIDList.cmdidMasterize, MenuItemCallback);
                 AddMenuCommand(mcs, PkgCmdIDList.cmdidTicketList, MenuItemCallback);
                 AddMenuCommand(mcs, PkgCmdIDList.cmdidPrivateBuild, MenuItemCallback);
                 AddMenuCommand(mcs, PkgCmdIDList.cmdidPull, MenuItemCallback);
             }
+        }
+
+        // fixup用のコミットメッセージファイルを開くだけ(無ければ作る)
+        // 実際にfixupするのは、コミットメッセージファイルを閉じたとき(DocumentEventsのDocumentClosingイベント)
+        void Fixup()
+        {
+            var commitMsgFile = GitUtil.GetCommitMessagePath(dte.Solution.FullName); 
+            if (File.Exists(commitMsgFile) == false)
+                File.CreateText(commitMsgFile).Close();
+            dte.ItemOperations.OpenFile(commitMsgFile);
         }
         #endregion
 
