@@ -8,6 +8,7 @@ using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.OLE.Interop;
 using Microsoft.VisualStudio.Shell;
+using EnvDTE;
 
 namespace Mistilteinn
 {
@@ -46,11 +47,17 @@ namespace Mistilteinn
             Trace.WriteLine(string.Format(CultureInfo.CurrentCulture, "Entering constructor for: {0}", this.ToString()));
         }
 
-
+        DTE dte;
+        DocumentEvents docEvent;
 
         /////////////////////////////////////////////////////////////////////////////
         // Overriden Package Implementation
         #region Package Members
+
+        TResult GetService<TService, TResult>()
+        {
+            return (TResult)GetService(typeof(TService));
+        }
 
         void AddMenuCommand(MenuCommandService target, int pkgCmdId, EventHandler handler)
         {
@@ -66,8 +73,12 @@ namespace Mistilteinn
             Trace.WriteLine (string.Format(CultureInfo.CurrentCulture, "Entering Initialize() of: {0}", this.ToString()));
             base.Initialize();
 
+            dte = GetService<DTE, DTE>();
+            docEvent = dte.Events.DocumentEvents;
+            docEvent.DocumentSaved += _ => GitUtil.GitNow(dte.Solution.FullName);
+
             // Add our command handlers for menu (commands must exist in the .vsct file)
-            OleMenuCommandService mcs = GetService(typeof(IMenuCommandService)) as OleMenuCommandService;
+            var mcs = GetService<IMenuCommandService, OleMenuCommandService>();
             if ( null != mcs )
             {
                 // Create the command for the menu item.
