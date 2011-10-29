@@ -50,6 +50,7 @@ namespace Mistilteinn
 
         DTE dte;
         DocumentEvents docEvent;
+        SolutionEvents solEvent;
 
         /////////////////////////////////////////////////////////////////////////////
         // Overriden Package Implementation
@@ -75,6 +76,12 @@ namespace Mistilteinn
             base.Initialize();
 
             dte = GetService<DTE, DTE>();
+            solEvent = dte.Events.SolutionEvents;
+            solEvent.Opened += () =>
+            {
+                // ゴミを作りまくるので、ソリューションを開いた時に裏でGCする
+                new System.Threading.Thread(() => GitUtil.DoGitGC(dte.Solution.FullName)).Start();
+            };
             docEvent = dte.Events.DocumentEvents;
             docEvent.DocumentSaved += doc =>
             {

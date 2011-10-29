@@ -16,6 +16,8 @@ namespace Mistilteinn
 
         public static void DoGitMaster(string solutionPath) { if (DoGit("master", solutionPath)) MessageBox.Show("success.", "complete!"); }
 
+        public static void DoGitGC(string solutionPath) { DoGit("gc", solutionPath); }
+
         static bool DoGit(string gitArg, string solutionPath)
         {
             try
