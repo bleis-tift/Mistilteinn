@@ -14,22 +14,25 @@ namespace Mistilteinn
 
         public static void DoGitNowFixup(string solutionPath) { DoGit("now --fixup .git/COMMIT_EDITMSG", solutionPath); }
 
-        static void DoGit(string gitArg, string solutionPath)
+        public static void DoGitMaster(string solutionPath) { if (DoGit("master", solutionPath)) MessageBox.Show("success.", "complete!"); }
+
+        static bool DoGit(string gitArg, string solutionPath)
         {
             try
             {
                 var gitRepos = GetRepos(solutionPath);
-                DoGitImpl(gitArg, gitRepos);
+                return DoGitImpl(gitArg, gitRepos);
             }
             catch (GitUtilException e)
             {
 #if DEBUG
                 MessageBox.Show(e.Message, "oops!");
 #endif
+                return false;
             }
         }
 
-        static void DoGitImpl(string gitArg, string gitRepos)
+        static bool DoGitImpl(string gitArg, string gitRepos)
         {
             var info = new ProcessStartInfo("git", gitArg)
             {
@@ -47,8 +50,10 @@ namespace Mistilteinn
 #if DEBUG
                     MessageBox.Show(err, "git command output error.");
 #endif
+                    return false;
                 }
             }
+            return true;
         }
 
         public static string GetRepos(string path)

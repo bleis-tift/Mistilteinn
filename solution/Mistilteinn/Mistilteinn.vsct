@@ -108,6 +108,15 @@
         </Strings>
       </Button>
 
+      <Button guid="guidMistilteinnCmdSet" id="cmdidMasterize" priority="0x0002" type="Button">
+        <Parent guid="guidIDEToolbarCmdSet" id="ToolbarGroup"/>
+        <Icon guid="guidImages" id="bmpPic2"/>
+        <Strings>
+          <CommandName>cmdidMasterize</CommandName>
+          <ButtonText>masterize</ButtonText>
+        </Strings>
+      </Button>
+
       <Button guid="guidMistilteinnCmdSet" id="cmdidTicketList" priority="0x0003" type="Button">
         <Parent guid="guidMistilteinnCmdSet" id="SubMenuGroup"/>
         <Icon guid="guidImages" id="bmpPicSearch"/>

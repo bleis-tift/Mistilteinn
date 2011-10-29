@@ -102,7 +102,7 @@ namespace Mistilteinn
             {
                 // Create the command for the menu item.
                 AddMenuCommand(mcs, PkgCmdIDList.cmdidFixup, (_, __) => Fixup());
-                AddMenuCommand(mcs, PkgCmdIDList.cmdidMasterize, MenuItemCallback);
+                AddMenuCommand(mcs, PkgCmdIDList.cmdidMasterize, (_, __) => Masterize());
                 AddMenuCommand(mcs, PkgCmdIDList.cmdidTicketList, MenuItemCallback);
                 AddMenuCommand(mcs, PkgCmdIDList.cmdidPrivateBuild, MenuItemCallback);
                 AddMenuCommand(mcs, PkgCmdIDList.cmdidPull, MenuItemCallback);
@@ -117,6 +117,11 @@ namespace Mistilteinn
             if (File.Exists(commitMsgFile) == false)
                 File.CreateText(commitMsgFile).Close();
             dte.ItemOperations.OpenFile(commitMsgFile);
+        }
+
+        void Masterize()
+        {
+            GitUtil.DoGitMaster(dte.Solution.FullName);
         }
         #endregion
 
