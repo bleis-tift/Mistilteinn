@@ -9,9 +9,26 @@
              Name="TicketListToolWindow"
              Background="{DynamicResource {x:Static vsfx:VsBrushes.ToolWindowBackgroundKey}}">
     <Grid>
-        <StackPanel Orientation="Vertical">
-            <TextBlock Margin="10" HorizontalAlignment="Center" Foreground="{DynamicResource {x:Static vsfx:VsBrushes.ToolWindowTextKey}}">This is a toolwindow with WPF content</TextBlock>
-            <Button Content="_Click Me!" Width="80" Height="80" Name="button1" Click="button1_Click" />
-        </StackPanel>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <ToolBarPanel>
+            <ToolBar>
+                <Button Content="Update"/>
+            </ToolBar>
+        </ToolBarPanel>
+        <DataGrid Grid.Row="1" IsReadOnly="True">
+            <DataGrid.Columns>
+                <DataGridCheckBoxColumn CanUserResize="False" />
+                <DataGridTextColumn Header="ID"/>
+                <DataGridTextColumn Header="Summary" Width="*" />
+            </DataGrid.Columns>
+            <DataGrid.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Detail"/>
+                </ContextMenu>
+            </DataGrid.ContextMenu>
+        </DataGrid>
     </Grid>
 </UserControl>

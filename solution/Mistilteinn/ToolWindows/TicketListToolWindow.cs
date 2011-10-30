@@ -19,7 +19,7 @@ namespace Mistilteinn.ToolWindows
     /// This class derives from the ToolWindowPane class provided from the MPF in order to use its 
     /// implementation of the IVsUIElementPane interface.
     /// </summary>
-    [Guid("1683e857-674b-40da-a0c5-3dc231d03fcb")]
+    [Guid("2BAA7C52-5040-4565-B234-2D045148181F")]
     public class TicketListToolWindow : ToolWindowPane
     {
         /// <summary>
