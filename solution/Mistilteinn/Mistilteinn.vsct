@@ -126,6 +126,15 @@
         </Strings>
       </Button>
 
+      <Button guid="guidMistilteinnCmdSet" id="cmdidTicketList" priority="0x0003" type="Button">
+        <Parent guid="guidIDEToolbarCmdSet" id="ToolbarGroup"/>
+        <Icon guid="guidImages" id="bmpPicSearch"/>
+        <Strings>
+          <CommandName>cmdidTicketList</CommandName>
+          <ButtonText>ticket lilst</ButtonText>
+        </Strings>
+      </Button>
+
       <Button guid="guidMistilteinnCmdSet" id="cmdidPrivateBuild" priority="0x0004" type="Button">
         <Parent guid="guidMistilteinnCmdSet" id="SubMenuGroup"/>
         <Icon guid="guidImages" id="bmpPicX"/>

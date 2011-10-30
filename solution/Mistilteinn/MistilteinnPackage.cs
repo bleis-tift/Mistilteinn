@@ -10,6 +10,7 @@ using Microsoft.VisualStudio.OLE.Interop;
 using Microsoft.VisualStudio.Shell;
 using EnvDTE;
 using System.IO;
+using Mistilteinn.ToolWindows;
 
 namespace Mistilteinn
 {
@@ -31,6 +32,7 @@ namespace Mistilteinn
     [InstalledProductRegistration("#110", "#112", "1.0", IconResourceID = 400)]
     // This attribute is needed to let the shell know that this package exposes some menus.
     [ProvideMenuResource("Menus.ctmenu", 1)]
+    [ProvideToolWindow(typeof(TicketListToolWindow))]
     [Guid(GuidList.guidMistilteinnPkgString)]
     [ProvideAutoLoad("ADFC4E64-0397-11D1-9F4E-00A0C911004F")]
     [ProvideAutoLoad("F1536EF8-92EC-443C-9ED7-FDADF150DA82")]
@@ -110,7 +112,7 @@ namespace Mistilteinn
                 // Create the command for the menu item.
                 AddMenuCommand(mcs, PkgCmdIDList.cmdidFixup, (_, __) => Fixup());
                 AddMenuCommand(mcs, PkgCmdIDList.cmdidMasterize, (_, __) => Masterize());
-                AddMenuCommand(mcs, PkgCmdIDList.cmdidTicketList, MenuItemCallback);
+                AddMenuCommand(mcs, PkgCmdIDList.cmdidTicketList, (_, __) => ShowTicketList());
                 AddMenuCommand(mcs, PkgCmdIDList.cmdidPrivateBuild, MenuItemCallback);
                 AddMenuCommand(mcs, PkgCmdIDList.cmdidPull, MenuItemCallback);
             }
@@ -129,6 +131,17 @@ namespace Mistilteinn
         void Masterize()
         {
             GitUtil.DoGitMaster(dte.Solution.FullName);
+        }
+
+        void ShowTicketList()
+        {
+            var window = this.FindToolWindow(typeof(TicketListToolWindow), 0, true);
+            if ((null == window) || (null == window.Frame))
+            {
+                throw new NotSupportedException("Can not create tool window.");
+            }
+            var windowFrame = (IVsWindowFrame)window.Frame;
+            Microsoft.VisualStudio.ErrorHandler.ThrowOnFailure(windowFrame.Show());
         }
         #endregion
 
