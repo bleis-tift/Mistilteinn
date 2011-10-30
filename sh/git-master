@@ -1,0 +1,7 @@
+#!/bin/sh
+MASTER=${1:-"master"}
+WORKING_BRANCH=`git branch -l | grep "*" | cut -d " " -f 2`
+git rebase $MASTER
+git checkout $MASTER
+git reset --hard $WORKING_BRANCH
+git branch -d $WORKING_BRANCH
