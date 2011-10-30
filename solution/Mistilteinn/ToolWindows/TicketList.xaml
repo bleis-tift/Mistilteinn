@@ -4,10 +4,14 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:vsfx="clr-namespace:Microsoft.VisualStudio.Shell;assembly=Microsoft.VisualStudio.Shell.10.0"
+             xmlns:vm="clr-namespace:Mistilteinn.ToolWindows"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300"
              Name="TicketListToolWindow"
              Background="{DynamicResource {x:Static vsfx:VsBrushes.ToolWindowBackgroundKey}}">
+    <UserControl.DataContext>
+        <vm:TicketListViewModel/>
+    </UserControl.DataContext>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -15,18 +19,13 @@
         </Grid.RowDefinitions>
         <ToolBarPanel>
             <ToolBar>
-                <Button Content="Update"/>
+                <Button Content="Update" Command="{Binding Path=UpdateCommand}"/>
             </ToolBar>
         </ToolBarPanel>
-        <DataGrid Grid.Row="1" IsReadOnly="True">
-            <DataGrid.Columns>
-                <DataGridCheckBoxColumn CanUserResize="False" />
-                <DataGridTextColumn Header="ID"/>
-                <DataGridTextColumn Header="Summary" Width="*" />
-            </DataGrid.Columns>
+        <DataGrid Grid.Row="1" IsReadOnly="True" ItemsSource="{Binding Path=Tickets}">
             <DataGrid.ContextMenu>
                 <ContextMenu>
-                    <MenuItem Header="Detail"/>
+                    <MenuItem Header="Detail" Command="{Binding Path=DetailCommand}" CommandParameter="{Binding Path=CurrentItem}"/>
                 </ContextMenu>
             </DataGrid.ContextMenu>
         </DataGrid>

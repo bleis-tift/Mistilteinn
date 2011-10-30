@@ -124,10 +124,14 @@
     <Compile Include="MistilteinnPackage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PkgCmdID.cs" />
+    <Compile Include="ToolWindows\RelayCommand.cs" />
+    <Compile Include="ToolWindows\Ticket.cs" />
     <Compile Include="ToolWindows\TicketList.xaml.cs">
       <DependentUpon>TicketList.xaml</DependentUpon>
     </Compile>
     <Compile Include="ToolWindows\TicketListToolWindow.cs" />
+    <Compile Include="ToolWindows\TicketListViewModel.cs" />
+    <Compile Include="ToolWindows\ViewModelBase.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources.resx">
