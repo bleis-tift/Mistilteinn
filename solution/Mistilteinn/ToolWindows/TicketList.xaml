@@ -22,12 +22,26 @@
                 <Button Content="Update" Command="{Binding Path=UpdateCommand}"/>
             </ToolBar>
         </ToolBarPanel>
-        <DataGrid Grid.Row="1" IsReadOnly="True" ItemsSource="{Binding Path=Tickets}">
-            <DataGrid.ContextMenu>
-                <ContextMenu>
-                    <MenuItem Header="Detail" Command="{Binding Path=DetailCommand}" CommandParameter="{Binding Path=CurrentItem}"/>
-                </ContextMenu>
-            </DataGrid.ContextMenu>
+        <DataGrid Grid.Row="1" ItemsSource="{Binding Path=Tickets}" AutoGenerateColumns="False" SelectedValue="{Binding SelectedValue}" >
+            <DataGrid.Columns>
+                <DataGridCheckBoxColumn CanUserResize="False" Binding="{Binding Path=IsCurrentBranch}" IsReadOnly="False" />
+                <DataGridTextColumn Header="ID" Binding="{Binding Path=ID}" IsReadOnly="True" />
+                <DataGridTextColumn Header="Summary" Width="*" Binding="{Binding Path=Summary}" IsReadOnly="True" />
+            </DataGrid.Columns>
+            <DataGrid.RowStyle>
+                <Style TargetType="DataGridRow">
+                    <Setter Property="ContextMenu">
+                        <Setter.Value>
+                            <ContextMenu>
+                                <MenuItem
+                                    Header="Detail"
+                                      
+                                    Command="{Binding Path=DetailCommand}"/>
+                            </ContextMenu>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </DataGrid.RowStyle>
         </DataGrid>
     </Grid>
 </UserControl>

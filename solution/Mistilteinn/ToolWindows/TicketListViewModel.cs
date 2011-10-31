@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
+using Mistilteinn.Models;
 
 namespace Mistilteinn.ToolWindows
 {
@@ -48,6 +49,10 @@ namespace Mistilteinn.ToolWindows
                 OnPropertyChanged(_ => _.Summary);
             }
         }
+
+        public string DetailInfo { get { return ticket.DetailInfo; } }
+
+        public ICommand DetailCommand { get { return new RelayCommand<object>(_ => { System.Windows.Forms.MessageBox.Show(DetailInfo); }); } }
     }
 
     public class TicketViewModelCollection : ObservableCollection<TicketViewModel>
@@ -73,8 +78,11 @@ namespace Mistilteinn.ToolWindows
         }
 
         TicketViewModelCollection ticketList =
-            new TicketViewModelCollection(new List<TicketViewModel>() { new TicketViewModel(new Ticket() { ID = "1", Summary = "hoge", IsCurrentBranch = true }) });
+            new TicketViewModelCollection(new List<TicketViewModel>()
+            {
+                new TicketViewModel(new Ticket() { ID = "1", Summary = "hoge", IsCurrentBranch = true, DetailInfo = "detail1" }),
+                new TicketViewModel(new Ticket() { ID = "2", Summary = "piyo", IsCurrentBranch = false, DetailInfo = "detail2" })
+            });
         public ICommand UpdateCommand { get { return new RelayCommand<object>(_ => { this.Tickets = new TicketViewModelCollection(ticketList); }); } }
-        public ICommand DetailCommand { get { return new RelayCommand<string>(_ => { System.Windows.Forms.MessageBox.Show(_); }); } }
     }
 }
