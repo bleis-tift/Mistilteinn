@@ -5,6 +5,8 @@ using System.Text;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 using Mistilteinn.Models;
+using System.IO;
+using Mistilteinn.Infos;
 
 namespace Mistilteinn.ToolWindows
 {
@@ -60,6 +62,8 @@ namespace Mistilteinn.ToolWindows
         public TicketViewModelCollection() { }
         public TicketViewModelCollection(IEnumerable<TicketViewModel> e) : base(e) { }
         public TicketViewModelCollection(List<TicketViewModel> l) : base(l) { }
+
+        public TicketViewModelCollection(IEnumerable<Ticket> tickets) : base(tickets.Select(t => new TicketViewModel(t))) { }
     }
 
     public class TicketListViewModel : ViewModelBase<TicketListViewModel>
@@ -77,12 +81,23 @@ namespace Mistilteinn.ToolWindows
             }
         }
 
-        TicketViewModelCollection ticketList =
-            new TicketViewModelCollection(new List<TicketViewModel>()
+        public ICommand UpdateCommand
+        {
+            get
             {
-                new TicketViewModel(new Ticket() { ID = "1", Summary = "hoge", IsCurrentBranch = true, DetailInfo = "detail1" }),
-                new TicketViewModel(new Ticket() { ID = "2", Summary = "piyo", IsCurrentBranch = false, DetailInfo = "detail2" })
-            });
-        public ICommand UpdateCommand { get { return new RelayCommand<object>(_ => { this.Tickets = new TicketViewModelCollection(ticketList); }); } }
+                return new RelayCommand<object>(_ =>
+                {
+                    if (SolutionInfo.RootDir == null)
+                    {
+                        this.Tickets = new TicketViewModelCollection();
+                        return;
+                    }
+
+                    var loader = new LocalTicketLoader(Path.Combine(SolutionInfo.RootDir, "tools-conf", "mistilteinn", "ticketlist"));
+                    var tickets = loader.Load(GitUtil.GetCurrentBranch(SolutionInfo.RootDir));
+                    this.Tickets = new TicketViewModelCollection(tickets);
+                });
+            }
+        }
     }
 }

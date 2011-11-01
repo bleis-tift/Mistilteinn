@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:vsfx="clr-namespace:Microsoft.VisualStudio.Shell;assembly=Microsoft.VisualStudio.Shell.10.0"
              xmlns:vm="clr-namespace:Mistilteinn.ToolWindows"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300"
              Name="TicketListToolWindow"
@@ -24,7 +25,13 @@
         </ToolBarPanel>
         <DataGrid Grid.Row="1" ItemsSource="{Binding Path=Tickets}" AutoGenerateColumns="False" SelectedValue="{Binding SelectedValue}" >
             <DataGrid.Columns>
-                <DataGridCheckBoxColumn CanUserResize="False" Binding="{Binding Path=IsCurrentBranch}" IsReadOnly="False" />
+                <DataGridTemplateColumn CanUserResize="False" IsReadOnly="False">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <RadioButton GroupName="bbb" IsChecked="{Binding IsCurrentBranch}"></RadioButton>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
                 <DataGridTextColumn Header="ID" Binding="{Binding Path=ID}" IsReadOnly="True" />
                 <DataGridTextColumn Header="Summary" Width="*" Binding="{Binding Path=Summary}" IsReadOnly="True" />
             </DataGrid.Columns>
@@ -35,7 +42,6 @@
                             <ContextMenu>
                                 <MenuItem
                                     Header="Detail"
-                                      
                                     Command="{Binding Path=DetailCommand}"/>
                             </ContextMenu>
                         </Setter.Value>

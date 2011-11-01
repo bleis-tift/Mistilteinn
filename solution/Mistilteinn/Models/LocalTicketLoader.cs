@@ -24,7 +24,9 @@ namespace Mistilteinn.Models
                 string line = "";
                 while ((line = stream.ReadLine()) != null)
                 {
-                    if (line.StartsWith(" "))
+                    if (line == "")
+                        continue;
+                    else if (line.StartsWith(" "))
                         pre.DetailInfo += (pre.DetailInfo == "" ? "" : "\n") + line.TrimStart();
                     else
                     {

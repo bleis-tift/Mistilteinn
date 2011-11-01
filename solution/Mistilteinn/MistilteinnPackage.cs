@@ -11,6 +11,7 @@ using Microsoft.VisualStudio.Shell;
 using EnvDTE;
 using System.IO;
 using Mistilteinn.ToolWindows;
+using Mistilteinn.Infos;
 
 namespace Mistilteinn
 {
@@ -81,8 +82,13 @@ namespace Mistilteinn
             solEvent = dte.Events.SolutionEvents;
             solEvent.Opened += () =>
             {
+                SolutionInfo.RootDir = Path.GetDirectoryName(dte.Solution.FullName);
                 // ゴミを作りまくるので、ソリューションを開いた時に裏でGCする
                 new System.Threading.Thread(() => GitUtil.DoGitGC(dte.Solution.FullName)).Start();
+            };
+            solEvent.AfterClosing += () =>
+            {
+                SolutionInfo.RootDir = null;
             };
             docEvent = dte.Events.DocumentEvents;
             docEvent.DocumentSaved += doc =>

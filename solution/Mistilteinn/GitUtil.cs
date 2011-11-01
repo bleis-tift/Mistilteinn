@@ -74,6 +74,30 @@ namespace Mistilteinn
         {
             return Path.Combine(GetRepos(path), ".git", "COMMIT_EDITMSG");
         }
+
+        public static string GetCurrentBranch(string path)
+        {
+            var info = new ProcessStartInfo("git", "branch -l")
+            {
+                WorkingDirectory = path,
+                RedirectStandardOutput = true,
+                CreateNoWindow = true,
+                UseShellExecute = false
+            };
+            try
+            {
+                using (var proc = Process.Start(info))
+                {
+                    var branches = proc.StandardOutput.ReadToEnd();
+                    proc.WaitForExit();
+                    return branches.Split('\n').Single(b => b.StartsWith("*")).Split(new[] { ' ' }, 2)[1];
+                }
+            }
+            catch
+            {
+                return "master";
+            }
+        }
     }
 
     public class GitUtilException : Exception
