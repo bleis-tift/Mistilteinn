@@ -82,13 +82,13 @@ namespace Mistilteinn
             solEvent = dte.Events.SolutionEvents;
             solEvent.Opened += () =>
             {
-                SolutionInfo.RootDir = Path.GetDirectoryName(dte.Solution.FullName);
+                SolutionInfo.FullPath = dte.Solution.FullName;
                 // ゴミを作りまくるので、ソリューションを開いた時に裏でGCする
                 new System.Threading.Thread(() => GitUtil.DoGitGC(dte.Solution.FullName)).Start();
             };
             solEvent.AfterClosing += () =>
             {
-                SolutionInfo.RootDir = null;
+                SolutionInfo.FullPath = null;
             };
             docEvent = dte.Events.DocumentEvents;
             docEvent.DocumentSaved += doc =>

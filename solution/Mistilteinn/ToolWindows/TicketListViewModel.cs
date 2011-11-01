@@ -55,6 +55,8 @@ namespace Mistilteinn.ToolWindows
         public string DetailInfo { get { return ticket.DetailInfo; } }
 
         public ICommand DetailCommand { get { return new RelayCommand<object>(_ => { System.Windows.Forms.MessageBox.Show(DetailInfo); }); } }
+
+        public ICommand CheckoutBranch { get { return new RelayCommand<object>(_ => { GitUtil.DoGitCheckout(SolutionInfo.RootDir, "id/" + ID); }); } }
     }
 
     public class TicketViewModelCollection : ObservableCollection<TicketViewModel>

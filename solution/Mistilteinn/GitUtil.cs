@@ -18,6 +18,12 @@ namespace Mistilteinn
 
         public static void DoGitGC(string solutionPath) { DoGit("gc", solutionPath); }
 
+        public static void DoGitCheckout(string solutionPath, string newBranch)
+        {
+            if (DoGit("checkout " + newBranch, solutionPath) == false)
+                DoGit("checkout -b " + newBranch, solutionPath);
+        }
+
         static bool DoGit(string gitArg, string solutionPath)
         {
             try
@@ -60,7 +66,7 @@ namespace Mistilteinn
 
         public static string GetRepos(string path)
         {
-            var crnt = Path.GetDirectoryName(path);
+            var crnt = Directory.Exists(path) ? path : Path.GetDirectoryName(path);
             while (Directory.Exists(Path.Combine(crnt, ".git")) == false)
             {
                 crnt = Path.GetDirectoryName(crnt);

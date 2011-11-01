@@ -28,7 +28,8 @@
                 <DataGridTemplateColumn CanUserResize="False" IsReadOnly="False">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <RadioButton GroupName="bbb" IsChecked="{Binding IsCurrentBranch}"></RadioButton>
+                            <RadioButton GroupName="bbb" IsChecked="{Binding IsCurrentBranch}" Command="{Binding CheckoutBranch}">
+                            </RadioButton>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
