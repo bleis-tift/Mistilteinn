@@ -7,6 +7,7 @@ using System.Windows.Input;
 using Mistilteinn.Models;
 using System.IO;
 using Mistilteinn.Infos;
+using System.Diagnostics;
 
 namespace Mistilteinn.ToolWindows
 {
@@ -54,7 +55,7 @@ namespace Mistilteinn.ToolWindows
 
         public string DetailInfo { get { return ticket.DetailInfo; } }
 
-        public ICommand DetailCommand { get { return new RelayCommand<object>(_ => { System.Windows.Forms.MessageBox.Show(DetailInfo); }); } }
+        public ICommand DetailCommand { get { return new RelayCommand<object>(_ => { if (DetailInfo.StartsWith("http://")) Process.Start(DetailInfo); else System.Windows.Forms.MessageBox.Show(DetailInfo); }); } }
 
         public ICommand CheckoutBranch { get { return new RelayCommand<object>(_ => { GitUtil.DoGitCheckout(SolutionInfo.RootDir, "id/" + ID); }); } }
     }
@@ -96,6 +97,7 @@ namespace Mistilteinn.ToolWindows
                     }
 
                     var loader = new LocalTicketLoader(Path.Combine(SolutionInfo.RootDir, "tools-conf", "mistilteinn", "ticketlist"));
+                    //var loader = new RedmineTicketLoader(null, null, null);
                     var tickets = loader.Load(GitUtil.GetCurrentBranch(SolutionInfo.RootDir));
                     this.Tickets = new TicketViewModelCollection(tickets);
                 });

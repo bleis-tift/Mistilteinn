@@ -54,6 +54,7 @@
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
@@ -117,6 +118,7 @@
     <Compile Include="Guids.cs" />
     <Compile Include="Infos\SolutionInfo.cs" />
     <Compile Include="Models\LocalTicketLoader.cs" />
+    <Compile Include="Models\RedmineTicketLoader.cs" />
     <Compile Include="Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
