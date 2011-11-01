@@ -115,6 +115,7 @@
   <ItemGroup>
     <Compile Include="GitUtil.cs" />
     <Compile Include="Guids.cs" />
+    <Compile Include="Models\LocalTicketLoader.cs" />
     <Compile Include="Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
