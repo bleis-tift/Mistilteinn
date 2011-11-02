@@ -88,6 +88,7 @@ namespace Mistilteinn
             solEvent.Opened += () =>
             {
                 SolutionInfo.FullPath = dte.Solution.FullName;
+                ApplicationInfo.RootDir = GitUtil.GetRepos(dte.Solution.FullName);
                 // ゴミを作りまくるので、ソリューションを開いた時に裏でGCする
                 new System.Threading.Thread(() => GitUtil.DoGitGC(dte.Solution.FullName)).Start();
             };
@@ -135,6 +136,8 @@ namespace Mistilteinn
 
                 AddMenuCommand(mcs, PkgCmdIDList.cmdidTaskCombo, (_, ev) =>
                 {
+                    if (ev == EventArgs.Empty)
+                        return;
                     var e = (OleMenuCmdEventArgs)ev;
                     var val = (string)e.InValue;
                     if (e.OutValue != IntPtr.Zero)
@@ -156,6 +159,8 @@ namespace Mistilteinn
                 });
                 AddMenuCommand(mcs, PkgCmdIDList.cmdidTaskComboGetList, (_, ev) =>
                 {
+                    if (ev == EventArgs.Empty)
+                        return;
                     var e = (OleMenuCmdEventArgs)ev;
                     var outPtr = e.OutValue;
                     tasks = Config.CreateTicketLoader().Load("master").Select(t => t.ID + ":" + t.Summary).ToList();
