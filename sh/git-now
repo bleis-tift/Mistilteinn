@@ -4,7 +4,7 @@ PREFIX="from now"
 MESSAGE="[${PREFIX}] `date +\"%Y/%m/%d %T\"`"
 
 get_amend() {
-    if [ -z `git log --pretty=oneline -1 | cut -d " " -f 2- | grep "^\[${PREFIX}]"` ]
+    if [ -z "`git log --pretty=oneline -1 | cut -d " " -f 2- | grep "^\[${PREFIX}]"`" ]
     then
         return 1
     fi
@@ -38,12 +38,7 @@ then
     FIRST_NOW_COMMIT=`git log --pretty=oneline --grep="${PREFIX}" | tail -n 1 | cut -d " " -f 1`
     git reset ${FIRST_NOW_COMMIT}
     git add -A
-    if [ $# -eq 2 ]
-    then
-        git commit --amend -F "$2"
-    else
-        git commit --amend
-    fi
+    git commit --amend $@
 elif [ $1 != "--rebase" ]
 then
     if [ $1 != "--all" ]

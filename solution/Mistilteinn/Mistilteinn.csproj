@@ -136,6 +136,7 @@
     <Compile Include="ToolWindows\TicketListToolWindow.cs" />
     <Compile Include="ToolWindows\TicketListViewModel.cs" />
     <Compile Include="ToolWindows\ViewModelBase.cs" />
+    <Compile Include="Utils\EncodeUtil.cs" />
     <Compile Include="Utils\UrlBuilder.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -12,6 +12,8 @@ using EnvDTE;
 using System.IO;
 using Mistilteinn.ToolWindows;
 using Mistilteinn.Infos;
+using Mistilteinn.Utils;
+using System.Text;
 
 namespace Mistilteinn
 {
@@ -107,6 +109,12 @@ namespace Mistilteinn
             {
                 if (doc.FullName == GitUtil.GetCommitMessagePath(dte.Solution.FullName))
                 {
+                    var bs = File.ReadAllBytes(doc.FullName);
+                    var enc = EncodeUtil.GetCode(bs);
+                    if (enc.CodePage != Encoding.UTF8.CodePage)
+                    {
+                        File.WriteAllText(doc.FullName, enc.GetString(bs), Encoding.UTF8);
+                    }
                     GitUtil.DoGitNowFixup(dte.Solution.FullName);
                 }
             };
