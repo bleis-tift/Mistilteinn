@@ -14,6 +14,9 @@ using Mistilteinn.ToolWindows;
 using Mistilteinn.Infos;
 using Mistilteinn.Utils;
 using System.Text;
+using System.Collections.Generic;
+using Mistilteinn.Configs;
+using System.Linq;
 
 namespace Mistilteinn
 {
@@ -129,8 +132,39 @@ namespace Mistilteinn
                 AddMenuCommand(mcs, PkgCmdIDList.cmdidTicketList, (_, __) => ShowTicketList());
                 AddMenuCommand(mcs, PkgCmdIDList.cmdidPrivateBuild, MenuItemCallback);
                 AddMenuCommand(mcs, PkgCmdIDList.cmdidPull, MenuItemCallback);
+
+                AddMenuCommand(mcs, PkgCmdIDList.cmdidTaskCombo, (_, ev) =>
+                {
+                    var e = (OleMenuCmdEventArgs)ev;
+                    var val = (string)e.InValue;
+                    if (e.OutValue != IntPtr.Zero)
+                    {
+                        Marshal.GetNativeVariantForObject(crntTask, e.OutValue);
+                    }
+                    else if (val != null)
+                    {
+                        for (int i = 0; i < tasks.Count; i++)
+                        {
+                            if (tasks[i] == val)
+                            {
+                                crntTask = tasks[i];
+                                // TODO : ブランチの切り替え
+                                return;
+                            }
+                        }
+                    }
+                });
+                AddMenuCommand(mcs, PkgCmdIDList.cmdidTaskComboGetList, (_, ev) =>
+                {
+                    var e = (OleMenuCmdEventArgs)ev;
+                    var outPtr = e.OutValue;
+                    tasks = Config.CreateTicketLoader().Load("master").Select(t => t.ID + ":" + t.Summary).ToList();
+                    Marshal.GetNativeVariantForObject(tasks, outPtr);
+                });
             }
         }
+        List<string> tasks = new List<string>();
+        string crntTask = "";
 
         // fixup用のコミットメッセージファイルを開くだけ(無ければ作る)
         // 実際にfixupするのは、コミットメッセージファイルを閉じたとき(DocumentEventsのDocumentClosingイベント)

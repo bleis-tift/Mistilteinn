@@ -68,6 +68,20 @@
         <Parent guid="guidIDEToolbarCmdSet" id="Toolbar"/>
       </Group>
     </Groups>
+
+    <Combos>
+      <Combo guid="guidMistilteinnCmdSet" id="cmdidTaskCombo" priority="0x0003" type="DropDownCombo" defaultWidth="130" idCommandList="cmdidTaskComboGetList">
+        <Parent guid="guidIDEToolbarCmdSet" id="ToolbarGroup"/>
+        <CommandFlag>IconAndText</CommandFlag>
+        <CommandFlag>CommandWellOnly</CommandFlag>
+        <Strings>
+          <MenuText>Current Task: </MenuText>
+          <ButtonText>Current Task</ButtonText>
+          <CanonicalName>Current Task</CanonicalName>
+          <CommandName>Current Task</CommandName>
+        </Strings>
+      </Combo>
+    </Combos>
     
     <!--Buttons section. -->
     <!--This section defines the elements the user can interact with, like a menu command or a button 
@@ -126,7 +140,7 @@
         </Strings>
       </Button>
 
-      <Button guid="guidMistilteinnCmdSet" id="cmdidTicketList" priority="0x0003" type="Button">
+      <Button guid="guidMistilteinnCmdSet" id="cmdidTicketList" priority="0x0004" type="Button">
         <Parent guid="guidIDEToolbarCmdSet" id="ToolbarGroup"/>
         <Icon guid="guidImages" id="bmpPicSearch"/>
         <Strings>
@@ -186,6 +200,8 @@
       <IDSymbol name="cmdidTicketList" value="0x0103"/>
       <IDSymbol name="cmdidPrivateBuild" value="0x0104"/>
       <IDSymbol name="cmdidPull" value="0x0105"/>
+      <IDSymbol name="cmdidTaskCombo" value="0x0201"/>
+      <IDSymbol name="cmdidTaskComboGetList" value="0x0202"/>
     </GuidSymbol>
 
     <GuidSymbol name="guidIDEToolbarCmdSet" value="{3422F9B0-3BD1-4E81-BF4A-2A0ECB9ADA99}">
