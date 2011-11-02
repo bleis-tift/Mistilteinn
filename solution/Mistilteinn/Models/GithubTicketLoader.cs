@@ -9,7 +9,7 @@ using System.Xml.Linq;
 
 namespace Mistilteinn.Models
 {
-    public class GithubTicketLoader
+    public class GithubTicketLoader : ITicketLoader
     {
         readonly string project;
         public GithubTicketLoader(string project)

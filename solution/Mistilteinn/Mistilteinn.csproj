@@ -114,6 +114,9 @@
     </COMReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Configs\Config.cs" />
+    <Compile Include="Infos\ApplicationInfo.cs" />
+    <Compile Include="Models\ITicketLoader.cs" />
     <Compile Include="GitUtil.cs" />
     <Compile Include="Guids.cs" />
     <Compile Include="Infos\SolutionInfo.cs" />
