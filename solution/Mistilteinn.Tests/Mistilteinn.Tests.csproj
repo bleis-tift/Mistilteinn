@@ -47,6 +47,7 @@
     <Compile Include="GitUtilTest.cs" />
     <Compile Include="TicketTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UrlBuilderTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Mistilteinn\Mistilteinn.csproj">

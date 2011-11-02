@@ -5,6 +5,7 @@ using System.Text;
 using System.Net;
 using System.IO;
 using System.Xml.Linq;
+using Mistilteinn.Utils;
 
 namespace Mistilteinn.Models
 {
@@ -23,7 +24,8 @@ namespace Mistilteinn.Models
 
         public IEnumerable<Ticket> Load(string currentBranch)
         {
-            var req = (HttpWebRequest)HttpWebRequest.Create(baseUrl + "issues.xml?project_id=" + projectId + "&assigned_to_id=me&key=" + accessKey);
+            var url = UrlBuilder.Build(baseUrl + "issues.xml", new { project_id = projectId, assigned_to_id = "me", key = accessKey });
+            var req = (HttpWebRequest)HttpWebRequest.Create(url);
             req.Method = "GET";
             using (var res = req.GetResponse())
             {
