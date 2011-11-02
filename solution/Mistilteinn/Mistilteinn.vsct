@@ -167,6 +167,14 @@
         </Strings>
       </Button>
 
+      <Button guid="guidMistilteinnCmdSet" id="cmdidConfig" priority="0x0006" type="Button">
+        <Parent guid="guidMistilteinnCmdSet" id="SubMenuGroup"/>
+        <Icon guid="guidImages" id="bmpPicArrows"/>
+        <Strings>
+          <CommandName>cmdidConfig</CommandName>
+          <ButtonText>config</ButtonText>
+        </Strings>
+      </Button>
     </Buttons>
    
     <!--The bitmaps section is used to define the bitmaps that are used for the commands.-->
@@ -200,6 +208,7 @@
       <IDSymbol name="cmdidTicketList" value="0x0103"/>
       <IDSymbol name="cmdidPrivateBuild" value="0x0104"/>
       <IDSymbol name="cmdidPull" value="0x0105"/>
+      <IDSymbol name="cmdidConfig" value="0x0106"/>
       <IDSymbol name="cmdidTaskCombo" value="0x0201"/>
       <IDSymbol name="cmdidTaskComboGetList" value="0x0202"/>
     </GuidSymbol>
