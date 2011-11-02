@@ -129,6 +129,7 @@ namespace Mistilteinn
                 AddMenuCommand(mcs, PkgCmdIDList.cmdidFixup, (_, __) => Fixup());
                 AddMenuCommand(mcs, PkgCmdIDList.cmdidMasterize, (_, __) => Masterize());
                 AddMenuCommand(mcs, PkgCmdIDList.cmdidTicketList, (_, __) => ShowTicketList());
+                AddMenuCommand(mcs, PkgCmdIDList.cmdidConfig, MenuItemCallback);
                 AddMenuCommand(mcs, PkgCmdIDList.cmdidPrivateBuild, MenuItemCallback);
                 AddMenuCommand(mcs, PkgCmdIDList.cmdidPull, MenuItemCallback);
 
