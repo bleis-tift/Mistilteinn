@@ -6,7 +6,7 @@ using System.IO;
 
 namespace Mistilteinn.Models
 {
-    public class LocalTicketLoader
+    public class LocalTicketLoader : ITicketLoader
     {
         readonly string ticketFilePath;
 

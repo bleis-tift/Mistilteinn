@@ -9,7 +9,7 @@ using Mistilteinn.Utils;
 
 namespace Mistilteinn.Models
 {
-    public class RedmineTicketLoader
+    public class RedmineTicketLoader : ITicketLoader
     {
         readonly string accessKey;
         readonly string baseUrl;

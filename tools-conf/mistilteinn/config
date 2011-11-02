@@ -1,0 +1,19 @@
+<config>
+    <loader>
+        <name>Mistilteinn.Models.LocalTicketLoader</name>
+        <args>
+            <arg name="ticketFilePath">${root}\tools-conf\mistilteinn\ticketlist</arg>
+        </args>
+    </loader>
+    <!--
+    <loader>
+        <name>Mistilteinn.Models.RedmineTicketLoader</name>
+        <args>
+            <arg name="accessKey" source="file">accesskey</arg>
+            <arg name="accessKey" source="appdata">accesskey</arg>
+            <arg name="baseUrl">http://rdm/</arg>
+            <arg name="projectId">otrproject00353</arg>
+        </args>
+    </loader>
+    -->
+</config>
