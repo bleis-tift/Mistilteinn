@@ -23,7 +23,7 @@
                 <Button Content="Update" Command="{Binding Path=UpdateCommand}"/>
             </ToolBar>
         </ToolBarPanel>
-        <DataGrid Grid.Row="1" ItemsSource="{Binding Path=Tickets}" AutoGenerateColumns="False" SelectedValue="{Binding SelectedValue}" >
+        <DataGrid Grid.Row="1" ItemsSource="{Binding Path=Tickets}" AutoGenerateColumns="False">
             <DataGrid.Columns>
                 <DataGridTemplateColumn CanUserResize="False" IsReadOnly="False">
                     <DataGridTemplateColumn.CellTemplate>
