@@ -115,6 +115,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Configs\Config.cs" />
+    <Compile Include="Configs\ConfigWindow.xaml.cs">
+      <DependentUpon>ConfigWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Configs\ConfigWindowViewModel.cs" />
     <Compile Include="Infos\ApplicationInfo.cs" />
     <Compile Include="Models\ITicketLoader.cs" />
     <Compile Include="GitUtil.cs" />
@@ -174,6 +178,10 @@
     <Content Include="Resources\Package.ico" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Configs\ConfigWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="ToolWindows\TicketList.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

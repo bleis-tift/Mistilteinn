@@ -17,6 +17,7 @@ using System.Text;
 using System.Collections.Generic;
 using Mistilteinn.Configs;
 using System.Linq;
+using System.Windows.Forms;
 
 namespace Mistilteinn
 {
@@ -131,7 +132,7 @@ namespace Mistilteinn
                 AddMenuCommand(mcs, PkgCmdIDList.cmdidFixup, (_, __) => Fixup());
                 AddMenuCommand(mcs, PkgCmdIDList.cmdidMasterize, (_, __) => Masterize());
                 AddMenuCommand(mcs, PkgCmdIDList.cmdidTicketList, (_, __) => ShowTicketList());
-                AddMenuCommand(mcs, PkgCmdIDList.cmdidConfig, MenuItemCallback);
+                AddMenuCommand(mcs, PkgCmdIDList.cmdidConfig, (_, __) => ShowConfigWindow());
                 AddMenuCommand(mcs, PkgCmdIDList.cmdidPrivateBuild, MenuItemCallback);
                 AddMenuCommand(mcs, PkgCmdIDList.cmdidPull, MenuItemCallback);
 
@@ -169,6 +170,7 @@ namespace Mistilteinn
                 });
             }
         }
+
         List<string> tasks = new List<string>();
         string crntTask = "";
 
@@ -196,6 +198,19 @@ namespace Mistilteinn
             }
             var windowFrame = (IVsWindowFrame)window.Frame;
             Microsoft.VisualStudio.ErrorHandler.ThrowOnFailure(windowFrame.Show());
+        }
+
+        void ShowConfigWindow()
+        {
+            var config = new ConfigWindow();
+            config.DataContext = new ConfigTicketLoaderViewModel
+            {
+                SelectedType = Config.CreateTicketLoader().GetType(),
+                Args = new List<ArgViewModel> { new ArgViewModel { Name = "project", Source = Source.Value, Value = @"${root}\tools-conf\mistilteinn\ticketlist" } }
+            };
+            var result = config.ShowDialog();
+            if (result.HasValue)
+                MessageBox.Show(result.Value.ToString());
         }
         #endregion
 
