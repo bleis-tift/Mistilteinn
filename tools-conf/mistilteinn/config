@@ -1,8 +1,8 @@
 <config>
     <loader>
-        <name>Mistilteinn.Models.LocalTicketLoader</name>
+        <name>Mistilteinn.Models.GithubTicketLoader</name>
         <args>
-            <arg name="ticketFilePath">${root}\tools-conf\mistilteinn\ticketlist</arg>
+            <arg name="project">bleis-tift/Mistilteinn</arg>
         </args>
     </loader>
     <!--
