@@ -55,7 +55,13 @@ namespace Mistilteinn.ToolWindows
 
         public string DetailInfo { get { return ticket.DetailInfo; } }
 
-        public ICommand DetailCommand { get { return new RelayCommand<object>(_ => { if (DetailInfo.StartsWith("http://")) Process.Start(DetailInfo); else System.Windows.Forms.MessageBox.Show(DetailInfo); }); } }
+        bool IsUrl(string str)
+        {
+            try { new Uri(str); return true; }
+            catch { return false; }
+        }
+
+        public ICommand DetailCommand { get { return new RelayCommand<object>(_ => { if (IsUrl(DetailInfo)) Process.Start(DetailInfo); else System.Windows.Forms.MessageBox.Show(DetailInfo); }); } }
 
         public ICommand CheckoutBranch { get { return new RelayCommand<object>(_ => { GitUtil.DoGitCheckout(SolutionInfo.RootDir, "id/" + ID); }); } }
     }
@@ -96,8 +102,9 @@ namespace Mistilteinn.ToolWindows
                         return;
                     }
 
-                    var loader = new LocalTicketLoader(Path.Combine(SolutionInfo.RootDir, "tools-conf", "mistilteinn", "ticketlist"));
+                    //var loader = new LocalTicketLoader(Path.Combine(SolutionInfo.RootDir, "tools-conf", "mistilteinn", "ticketlist"));
                     //var loader = new RedmineTicketLoader(null, null, null);
+                    var loader = new GithubTicketLoader("bleis-tift/Mistilteinn");
                     var tickets = loader.Load(GitUtil.GetCurrentBranch(SolutionInfo.RootDir));
                     this.Tickets = new TicketViewModelCollection(tickets);
                 });
