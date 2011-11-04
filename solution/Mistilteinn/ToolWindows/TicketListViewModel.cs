@@ -106,7 +106,7 @@ namespace Mistilteinn.ToolWindows
                     //var loader = new LocalTicketLoader(Path.Combine(SolutionInfo.RootDir, "tools-conf", "mistilteinn", "ticketlist"));
                     //var loader = new RedmineTicketLoader(null, null, null);
                     //var loader = new GithubTicketLoader("bleis-tift/Mistilteinn");
-                    var loader = Config.CreateTicketLoader();
+                    var loader = Configs.Config.CreateTicketLoader();
                     var tickets = loader.Load(GitUtil.GetCurrentBranch(SolutionInfo.RootDir));
                     this.Tickets = new TicketViewModelCollection(tickets);
                 });

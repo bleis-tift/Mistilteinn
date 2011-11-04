@@ -213,11 +213,14 @@ namespace Mistilteinn
         void ShowConfigWindow()
         {
             var config = new ConfigWindow();
-            config.DataContext = new ConfigTicketLoaderViewModel
+            config.DataContext = new ConfigViewModel(new Models.Config
             {
-                SelectedType = Config.CreateTicketLoader().GetType(),
-                Args = new List<ArgViewModel> { new ArgViewModel { Name = "project", Source = Source.Value, Value = @"${root}\tools-conf\mistilteinn\ticketlist" } }
-            };
+                TicketLoader = new Models.Config.TicketLoaderType
+                {
+                    Type = typeof(Mistilteinn.Models.GithubTicketLoader),
+                    Args = new[] { new Models.Config.TicketLoaderType.ArgType { Name = "hoge", Source = Models.SourceEnum.Value, Value = "piyo" } }
+                }
+            });
             var result = config.ShowDialog();
             if (result.HasValue)
                 MessageBox.Show(result.Value.ToString());

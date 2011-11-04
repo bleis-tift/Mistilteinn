@@ -7,58 +7,69 @@ using Mistilteinn.Models;
 
 namespace Mistilteinn.Configs
 {
-    public class ConfigTicketLoaderViewModel : ViewModelBase<ConfigTicketLoaderViewModel>
+    public class ConfigViewModel : ViewModelBase<ConfigViewModel>
     {
-        readonly IEnumerable<Type> types = typeof(ConfigTicketLoaderViewModel).Assembly.GetTypes().Where(t => t.GetInterfaces().Contains(typeof(ITicketLoader)));
-        public IEnumerable<Type> Types { get { return types; } }
+        Models.Config config;
+        public ConfigViewModel(Models.Config config) { this.config = config; }
+        public ConfigViewModel() : this(new Models.Config()) { }
 
-        Type selectedType;
-        public Type SelectedType
+        public TicketLoaderConfigViewModel TicketLoader
         {
-            get { return selectedType; }
-            set { if (selectedType == value) return; selectedType = value; OnPropertyChanged(_ => _.SelectedType); }
-        }
-        IEnumerable<ArgViewModel> args = new List<ArgViewModel>();
-        public IEnumerable<ArgViewModel> Args
-        {
-            get { return args; }
-            set { if (args == value) return; args = value; OnPropertyChanged(_ => _.Args); }
+            get { return new TicketLoaderConfigViewModel(config.TicketLoader); }
+            set { config.TicketLoader = value.Model; OnPropertyChanged(_ => _.TicketLoader); }
         }
     }
 
-    public class Arg
+    public class TicketLoaderConfigViewModel : ViewModelBase<TicketLoaderConfigViewModel>
     {
-        public string Name { get; set; }
-        public Source Source { get; set; }
-        public string Value { get; set; }
+        Models.Config.TicketLoaderType ticketLoader;
+
+        public TicketLoaderConfigViewModel(Models.Config.TicketLoaderType ticketLoader)
+        {
+            this.ticketLoader = ticketLoader ?? new Models.Config.TicketLoaderType();
+        }
+
+        public Models.Config.TicketLoaderType Model { get { return ticketLoader; } set { ticketLoader = value; } }
+
+        static readonly IEnumerable<Type> types = typeof(TicketLoaderConfigViewModel).Assembly.GetTypes().Where(t => t.GetInterfaces().Contains(typeof(ITicketLoader)));
+        public IEnumerable<Type> Types { get { return types; } }
+
+        public Type SelectedType
+        {
+            get { return ticketLoader.Type; }
+            set { if (ticketLoader.Type == value) return; ticketLoader.Type = value; OnPropertyChanged(_ => _.SelectedType); }
+        }
+
+        public IEnumerable<ArgViewModel> Args
+        {
+            get { return (ticketLoader.Args ?? Enumerable.Empty<Models.Config.TicketLoaderType.ArgType>()).Select(a => new ArgViewModel(a)); }
+        }
     }
 
     public class ArgViewModel : ViewModelBase<ArgViewModel>
     {
-        Arg arg;
-        public ArgViewModel(Arg arg) { this.arg = arg; }
-        public ArgViewModel() : this(new Arg()) { }
+        Models.Config.TicketLoaderType.ArgType arg;
+        public ArgViewModel(Models.Config.TicketLoaderType.ArgType arg)
+        {
+            this.arg = arg ?? new Models.Config.TicketLoaderType.ArgType();
+        }
+
         public string Name
         {
             get { return arg.Name; }
             set { if (arg.Name == value) return; arg.Name = value; OnPropertyChanged(_ => _.Name); }
         }
-        public Source Source
+
+        public Models.SourceEnum Source
         {
             get { return arg.Source; }
             set { if (arg.Source == value) return; arg.Source = value; OnPropertyChanged(_ => _.Source); }
         }
+
         public string Value
         {
             get { return arg.Value; }
             set { if (arg.Value == value) return; arg.Value = value; OnPropertyChanged(_ => _.Value); }
         }
-    }
-
-    public enum Source
-    {
-        Value,
-        File,
-        AppData
     }
 }

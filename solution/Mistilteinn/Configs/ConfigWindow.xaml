@@ -3,16 +3,17 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
         xmlns:vm="clr-namespace:Mistilteinn.Configs"
+        xmlns:m="clr-namespace:Mistilteinn.Models"
         Title="ConfigWindow" Height="480" Width="640">
     <Window.Resources>
         <ObjectDataProvider x:Key="SourceList" MethodName="GetValues" ObjectType="{x:Type sys:Enum}">
             <ObjectDataProvider.MethodParameters>
-                <x:Type TypeName="vm:Source"/>
+                <x:Type TypeName="m:SourceEnum"/>
             </ObjectDataProvider.MethodParameters>
         </ObjectDataProvider>
     </Window.Resources>
     <Window.DataContext>
-        <vm:ConfigTicketLoaderViewModel/>
+        <vm:ConfigViewModel/>
     </Window.DataContext>
     <Grid>
         <Grid.RowDefinitions>
@@ -31,10 +32,10 @@
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
                     <Label Content="Type" Grid.Column="0" Grid.Row="0"/>
-                    <ComboBox Grid.Column="1" Grid.Row="0" ItemsSource="{Binding Path=Types}" SelectedValue="{Binding Path=SelectedType}" />
+                    <ComboBox Grid.Column="1" Grid.Row="0" ItemsSource="{Binding Path=TicketLoader.Types}" SelectedValue="{Binding Path=TicketLoader.SelectedType}" />
 
                     <Label Content="Args" Grid.Column="0" Grid.Row="1"/>
-                    <DataGrid Grid.Column="1" Grid.Row="1" AutoGenerateColumns="False" ItemsSource="{Binding Path=Args}">
+                    <DataGrid Grid.Column="1" Grid.Row="1" AutoGenerateColumns="False" ItemsSource="{Binding Path=TicketLoader.Args}">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Name" Width="Auto" Binding="{Binding Name}" />
                             <DataGridComboBoxColumn Header="Source" Width="Auto" ItemsSource="{Binding Source={StaticResource SourceList}}" SelectedValueBinding="{Binding Path=Source}" />
