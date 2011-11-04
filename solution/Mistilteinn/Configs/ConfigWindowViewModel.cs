@@ -4,6 +4,10 @@ using System.Linq;
 using System.Text;
 using Mistilteinn.ToolWindows;
 using Mistilteinn.Models;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Windows.Input;
+using System.Windows.Data;
 
 namespace Mistilteinn.Configs
 {
@@ -11,13 +15,14 @@ namespace Mistilteinn.Configs
     {
         Models.Config config;
         public ConfigViewModel(Models.Config config) { this.config = config; }
-        public ConfigViewModel() : this(new Models.Config()) { }
 
         public TicketLoaderConfigViewModel TicketLoader
         {
             get { return new TicketLoaderConfigViewModel(config.TicketLoader); }
             set { config.TicketLoader = value.Model; OnPropertyChanged(_ => _.TicketLoader); }
         }
+
+        public ICommand OKCommand { get { return new RelayCommand<object>(_ => {  }); } }
     }
 
     public class TicketLoaderConfigViewModel : ViewModelBase<TicketLoaderConfigViewModel>
@@ -27,6 +32,13 @@ namespace Mistilteinn.Configs
         public TicketLoaderConfigViewModel(Models.Config.TicketLoaderType ticketLoader)
         {
             this.ticketLoader = ticketLoader ?? new Models.Config.TicketLoaderType();
+
+            if (ticketLoader.Args == null) args = new BindingList<ArgViewModel>();
+            args = new BindingList<ArgViewModel>(this.ticketLoader.Args.Select(arg => new ArgViewModel(arg)).ToList());
+
+            args.AllowNew = true;
+            args.AddingNew += delegate { ;;;;; };
+          
         }
 
         public Models.Config.TicketLoaderType Model { get { return ticketLoader; } set { ticketLoader = value; } }
@@ -39,10 +51,10 @@ namespace Mistilteinn.Configs
             get { return ticketLoader.Type; }
             set { if (ticketLoader.Type == value) return; ticketLoader.Type = value; OnPropertyChanged(_ => _.SelectedType); }
         }
-
-        public IEnumerable<ArgViewModel> Args
+        BindingList<ArgViewModel> args;
+        public BindingList<ArgViewModel> Args
         {
-            get { return (ticketLoader.Args ?? Enumerable.Empty<Models.Config.TicketLoaderType.ArgType>()).Select(a => new ArgViewModel(a)); }
+            get { return args; }
         }
     }
 
@@ -53,6 +65,7 @@ namespace Mistilteinn.Configs
         {
             this.arg = arg ?? new Models.Config.TicketLoaderType.ArgType();
         }
+        public ArgViewModel() : this(new Models.Config.TicketLoaderType.ArgType()) { }
 
         public string Name
         {
