@@ -120,6 +120,7 @@
     </Compile>
     <Compile Include="Configs\ConfigWindowViewModel.cs" />
     <Compile Include="Infos\ApplicationInfo.cs" />
+    <Compile Include="Models\Config.cs" />
     <Compile Include="Models\ITicketLoader.cs" />
     <Compile Include="GitUtil.cs" />
     <Compile Include="Guids.cs" />
