@@ -10,7 +10,7 @@ namespace Mistilteinn.ToolWindows
     public abstract class ViewModelBase<TSelf> : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
-        protected void OnPropertyChanged(Expression<Func<TSelf, object>> expr)
+        protected void OnPropertyChanged<TResult>(Expression<Func<TSelf, TResult>> expr)
         {
             var h = PropertyChanged;
             if (h == null) return;

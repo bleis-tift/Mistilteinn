@@ -212,6 +212,7 @@ namespace Mistilteinn
                 }
             });
             var result = config.ShowDialog();
+            
             if (result.HasValue)
                 MessageBox.Show(result.Value.ToString());
         }

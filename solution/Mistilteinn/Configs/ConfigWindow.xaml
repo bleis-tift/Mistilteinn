@@ -5,6 +5,7 @@
         xmlns:vm="clr-namespace:Mistilteinn.Configs"
         xmlns:m="clr-namespace:Mistilteinn.Models"
         Title="ConfigWindow" Height="480" Width="640">
+
     <Window.Resources>
         <ObjectDataProvider x:Key="SourceList" MethodName="GetValues" ObjectType="{x:Type sys:Enum}">
             <ObjectDataProvider.MethodParameters>
@@ -12,9 +13,6 @@
             </ObjectDataProvider.MethodParameters>
         </ObjectDataProvider>
     </Window.Resources>
-    <Window.DataContext>
-        <vm:ConfigViewModel/>
-    </Window.DataContext>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
@@ -35,7 +33,7 @@
                     <ComboBox Grid.Column="1" Grid.Row="0" ItemsSource="{Binding Path=TicketLoader.Types}" SelectedValue="{Binding Path=TicketLoader.SelectedType}" />
 
                     <Label Content="Args" Grid.Column="0" Grid.Row="1"/>
-                    <DataGrid Grid.Column="1" Grid.Row="1" AutoGenerateColumns="False" ItemsSource="{Binding Path=TicketLoader.Args}">
+                    <DataGrid IsSynchronizedWithCurrentItem="True"  Grid.Column="1" Grid.Row="1" AutoGenerateColumns="False" ItemsSource="{Binding Path=TicketLoader.Args}" CanUserAddRows="True">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Name" Width="Auto" Binding="{Binding Name}" />
                             <DataGridComboBoxColumn Header="Source" Width="Auto" ItemsSource="{Binding Source={StaticResource SourceList}}" SelectedValueBinding="{Binding Path=Source}" />
@@ -46,7 +44,7 @@
             </TabItem>
         </TabControl>
         <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right">
-            <Button Content="OK" Width="Auto" IsDefault="True" />
+            <Button Content="OK" Width="Auto" IsDefault="True" Click="Button_Click" />
             <Button Content="Cancel" Width="Auto" IsCancel="True" />
         </StackPanel>
     </Grid>
