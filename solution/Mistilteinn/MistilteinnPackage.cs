@@ -14,6 +14,7 @@ using Mistilteinn.ToolWindows;
 using Mistilteinn.Infos;
 using Mistilteinn.Utils;
 using System.Text;
+using System.Linq;
 
 namespace Mistilteinn
 {
@@ -111,10 +112,7 @@ namespace Mistilteinn
                 {
                     var bs = File.ReadAllBytes(doc.FullName);
                     var enc = EncodeUtil.GetCode(bs);
-                    if (enc.CodePage != Encoding.UTF8.CodePage)
-                    {
-                        File.WriteAllText(doc.FullName, enc.GetString(bs), Encoding.UTF8);
-                    }
+                    File.WriteAllLines(doc.FullName, enc.GetString(bs).Split('\n').Where(l => l.StartsWith("#") == false), Encoding.UTF8);
                     GitUtil.DoGitNowFixup(dte.Solution.FullName);
                 }
             };
@@ -136,9 +134,21 @@ namespace Mistilteinn
         // 実際にfixupするのは、コミットメッセージファイルを閉じたとき(DocumentEventsのDocumentClosingイベント)
         void Fixup()
         {
-            var commitMsgFile = GitUtil.GetCommitMessagePath(dte.Solution.FullName); 
-            if (File.Exists(commitMsgFile) == false)
+            var commitMsgFile = GitUtil.GetCommitMessagePath(dte.Solution.FullName);
+            if (File.Exists(commitMsgFile))
+            {
+                var msg = File.ReadAllText(commitMsgFile).Trim();
+                if (msg == "" || msg.StartsWith("[from now]"))
+                {
+                    var log = GitUtil.GetGitOnelineLogs(SolutionInfo.RootDir, GitUtil.GetCurrentBranch(SolutionInfo.RootDir));
+                    var lines = log.Select(l => "# " + l.Split(new[] { ' ' }, 2)[1]);
+                    File.WriteAllLines(commitMsgFile, Enumerable.Concat(new[] { "" }, lines), Encoding.UTF8);
+                }
+            }
+            else
+            {
                 File.CreateText(commitMsgFile).Close();
+            }
             dte.ItemOperations.OpenFile(commitMsgFile);
         }
 

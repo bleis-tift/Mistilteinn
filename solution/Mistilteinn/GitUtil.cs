@@ -104,6 +104,32 @@ namespace Mistilteinn
                 return "master";
             }
         }
+
+        public static IEnumerable<string> GetGitOnelineLogs(string path, string currentBranch)
+        {
+            var num = currentBranch.Split('/')[1];
+            var info = new ProcessStartInfo("git", "log --oneline --grep=\"refs #\"" + num + "$")
+            {
+                WorkingDirectory = path,
+                RedirectStandardOutput = true,
+                StandardOutputEncoding = Encoding.UTF8,
+                CreateNoWindow = true,
+                UseShellExecute = false
+            };
+            try
+            {
+                using (var proc = Process.Start(info))
+                {
+                    var log = proc.StandardOutput.ReadToEnd();
+                    proc.WaitForExit();
+                    return log.Split(new[] { "\n" }, StringSplitOptions.RemoveEmptyEntries);
+                }
+            }
+            catch
+            {
+                return new string[0];
+            }
+        }
     }
 
     public class GitUtilException : Exception
