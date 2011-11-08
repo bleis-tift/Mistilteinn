@@ -49,6 +49,7 @@ namespace Mistilteinn
                 CreateNoWindow = true,
                 UseShellExecute = false
             };
+            info.EnvironmentVariables["GIT_HOOKS_HOME"] = @"C:\Apps\Git-Hooks";
             using (var proc = Process.Start(info))
             {
                 var err = proc.StandardError.ReadToEnd();
