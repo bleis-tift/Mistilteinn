@@ -18,10 +18,10 @@ namespace Mistilteinn
 
         public static void DoGitGC(string solutionPath) { DoGit("gc", solutionPath); }
 
-        public static void DoGitCheckout(string solutionPath, string newBranch)
+        public static void DoGitCheckout(string solutionPath, string newBranch, string baseBranch = "")
         {
             if (DoGit("checkout " + newBranch, solutionPath) == false)
-                DoGit("checkout -b " + newBranch, solutionPath);
+                DoGit("checkout -b " + newBranch + " " + baseBranch, solutionPath);
         }
 
         static bool DoGit(string gitArg, string solutionPath)

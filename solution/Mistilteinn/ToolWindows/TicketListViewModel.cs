@@ -63,7 +63,7 @@ namespace Mistilteinn.ToolWindows
 
         public ICommand DetailCommand { get { return new RelayCommand<object>(_ => { if (IsUrl(DetailInfo)) Process.Start(DetailInfo); else System.Windows.Forms.MessageBox.Show(DetailInfo); }); } }
 
-        public ICommand CheckoutBranch { get { return new RelayCommand<object>(_ => { GitUtil.DoGitCheckout(SolutionInfo.RootDir, "id/" + ID); }); } }
+        public ICommand CheckoutBranch { get { return new RelayCommand<object>(_ => { GitUtil.DoGitCheckout(SolutionInfo.RootDir, "id/" + ID, "master"); }); } }
     }
 
     public class TicketViewModelCollection : ObservableCollection<TicketViewModel>
