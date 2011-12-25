@@ -4,48 +4,76 @@
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
         xmlns:vm="clr-namespace:Mistilteinn.Configs"
         xmlns:m="clr-namespace:Mistilteinn.Models"
+        FontSize="18"
         Title="ConfigWindow" Height="480" Width="640">
-
+    
     <Window.Resources>
-        <ObjectDataProvider x:Key="SourceList" MethodName="GetValues" ObjectType="{x:Type sys:Enum}">
-            <ObjectDataProvider.MethodParameters>
-                <x:Type TypeName="m:SourceEnum"/>
-            </ObjectDataProvider.MethodParameters>
-        </ObjectDataProvider>
-    </Window.Resources>
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
-        <TabControl Grid.Row="0">
-            <TabItem Header="Ticket List Loader">
-                <Grid Margin="10">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
-                    <Label Content="Type" Grid.Column="0" Grid.Row="0"/>
-                    <ComboBox Grid.Column="1" Grid.Row="0" ItemsSource="{Binding Path=TicketLoader.Types}" SelectedValue="{Binding Path=TicketLoader.SelectedType}" />
+            <DataTemplate DataType="{x:Type vm:LocalTicketLoaderViewModel}">
+                <StackPanel>
+                    <HeaderedContentControl Header="Ticket File Path :">
+                    <DockPanel>
+                        <Button DockPanel.Dock="Right" Command="{Binding Browse}" Width="80"  Margin="10,0,0,0">Browse...</Button>
+                        <TextBox Text="{Binding TicketFilePath}"></TextBox>
+                    </DockPanel>
+                    </HeaderedContentControl>
+                </StackPanel>
 
-                    <Label Content="Args" Grid.Column="0" Grid.Row="1"/>
-                    <DataGrid IsSynchronizedWithCurrentItem="True"  Grid.Column="1" Grid.Row="1" AutoGenerateColumns="False" ItemsSource="{Binding Path=TicketLoader.Args}" CanUserAddRows="True">
-                        <DataGrid.Columns>
-                            <DataGridTextColumn Header="Name" Width="Auto" Binding="{Binding Name}" />
-                            <DataGridComboBoxColumn Header="Source" Width="Auto" ItemsSource="{Binding Source={StaticResource SourceList}}" SelectedValueBinding="{Binding Path=Source}" />
-                            <DataGridTextColumn Header="Value" Width="*" Binding="{Binding Value}" />
-                        </DataGrid.Columns>
-                    </DataGrid>
-                </Grid>
+            </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:GithubTicketLoaderViewModel}">
+                <StackPanel>
+                    <HeaderedContentControl Header="Project ID :">
+                    <TextBox Text="{Binding ProjectId}"></TextBox>
+                    </HeaderedContentControl>
+                </StackPanel>
+            </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:RedmineTicketLoaderViewModel}">
+                <StackPanel>
+                    <HeaderedContentControl Header="Access Key :">
+                    <TextBox  Text="{Binding AccessKey}"></TextBox>
+                    </HeaderedContentControl>
+                    <HeaderedContentControl Header="Base URL :">
+                    <TextBox Text="{Binding BaseUrl}"></TextBox>
+                    </HeaderedContentControl>
+                    <HeaderedContentControl Header="Project ID :">
+                    <TextBox Text="{Binding ProjectId}"></TextBox>
+                    </HeaderedContentControl>
+                </StackPanel>
+            </DataTemplate>
+    </Window.Resources>
+    <DockPanel>
+        <StackPanel Margin="10" DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Right">
+            <StackPanel.Resources>
+                <Style TargetType="Button">
+                    <Setter Property="Width" Value="80"/>
+                    <Setter Property="Height" Value="30"/>
+                    <Setter Property="Margin" Value="10,0,0,0"/>
+                </Style>
+            </StackPanel.Resources>
+            <Button Content="OK"  IsDefault="True" Click="Button_Click" />
+            <Button Content="Cancel" IsCancel="True" />
+        </StackPanel>
+        <TabControl Margin="10 10 10 0" Padding="10">
+            <TabItem Header="Ticket List Source" >
+                <StackPanel>
+                    <HeaderedContentControl Header="Source :">
+                        <ComboBox Height="50" x:Name="SourceCombobox" ItemsSource="{Binding TicketLoaderConfig.TicketLoaders}" SelectedItem="{Binding TicketLoaderConfig.SelectedLoader}" >
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate DataType="vm:TicketLoaderViewModel">
+                                    <DockPanel>
+                                        <Image Width="50" Height="50" DockPanel.Dock="Left" Margin="0,0,10,0" Source="{Binding Icon}"></Image>
+                                        <TextBlock FontSize="28" VerticalAlignment="Center" Text="{Binding DisplayName}"></TextBlock>
+                                    </DockPanel>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+                    </HeaderedContentControl>
+
+                    <ContentPresenter Margin="0,10,0,0" Content="{Binding  TicketLoaderConfig.SelectedLoader}">
+
+                    </ContentPresenter>
+                </StackPanel>
+
             </TabItem>
         </TabControl>
-        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right">
-            <Button Content="OK" Width="Auto" IsDefault="True" Click="Button_Click" />
-            <Button Content="Cancel" Width="Auto" IsCancel="True" />
-        </StackPanel>
-    </Grid>
+    </DockPanel>
 </Window>

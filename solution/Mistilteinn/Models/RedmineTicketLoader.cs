@@ -6,9 +6,11 @@ using System.Net;
 using System.IO;
 using System.Xml.Linq;
 using Mistilteinn.Utils;
+using System.ComponentModel;
 
 namespace Mistilteinn.Models
 {
+    [DisplayName("Redmine")]
     public class RedmineTicketLoader : ITicketLoader
     {
         readonly string accessKey;

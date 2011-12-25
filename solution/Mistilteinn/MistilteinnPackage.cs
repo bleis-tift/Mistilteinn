@@ -163,7 +163,7 @@ namespace Mistilteinn
                         return;
                     var e = (OleMenuCmdEventArgs)ev;
                     var outPtr = e.OutValue;
-                    tasks = Config.CreateTicketLoader().Load("master").Select(t => t.ID + ":" + t.Summary).ToList();
+                    tasks = ConfigHelper.CreateTicketLoader().Load("master").Select(t => t.ID + ":" + t.Summary).ToList();
                     Marshal.GetNativeVariantForObject(tasks, outPtr);
                 });
             }
@@ -215,11 +215,6 @@ namespace Mistilteinn
             var config = new ConfigWindow();
             config.DataContext = new ConfigViewModel(new Models.Config
             {
-                TicketLoader = new Models.Config.TicketLoaderType
-                {
-                    Type = typeof(Mistilteinn.Models.GithubTicketLoader),
-                    Args = new[] { new Models.Config.TicketLoaderType.ArgType { Name = "hoge", Source = Models.SourceEnum.Value, Value = "piyo" } }
-                }
             });
             var result = config.ShowDialog();
             

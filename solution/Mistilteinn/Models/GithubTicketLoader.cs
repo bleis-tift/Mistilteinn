@@ -6,9 +6,12 @@ using Mistilteinn.Utils;
 using System.Net;
 using System.IO;
 using System.Xml.Linq;
+using System.ComponentModel;
 
 namespace Mistilteinn.Models
 {
+
+    [DisplayName("Github")]
     public class GithubTicketLoader : ITicketLoader
     {
         readonly string project;

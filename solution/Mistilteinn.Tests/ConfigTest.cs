@@ -27,7 +27,7 @@ namespace Mistilteinn.Tests
                 typeof(LocalTicketLoader).FullName,
                 new { name = "ticketFilePath", value = "${root}/tools-conf/mistilteinn/ticketlist" });
 
-            var loader = Configs.Config.CreateTicketLoader();
+            var loader = Configs.ConfigHelper.CreateTicketLoader();
             Assert.That(loader, Is.TypeOf<LocalTicketLoader>());
         }
 
@@ -40,7 +40,7 @@ namespace Mistilteinn.Tests
                 new { name = "baseUrl", value = "http://rdm/" },
                 new { name = "projectId", value = "otrproject00353" });
 
-            var loader = Configs.Config.CreateTicketLoader();
+            var loader = Configs.ConfigHelper.CreateTicketLoader();
             Assert.That(loader, Is.TypeOf<RedmineTicketLoader>());
         }
 
