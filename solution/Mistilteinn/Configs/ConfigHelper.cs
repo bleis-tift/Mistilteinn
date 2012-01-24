@@ -10,6 +10,7 @@ using System.Xml.Linq;
 using System.Windows.Forms;
 using Mistilteinn.ToolWindows;
 using System.ComponentModel;
+using System.Xml.XPath;
 
 namespace Mistilteinn.Configs
 {
@@ -19,21 +20,20 @@ namespace Mistilteinn.Configs
         {
             var conf = Path.Combine(ApplicationInfo.RootDir, "tools-conf", "mistilteinn", "config");
             var loader = XElement.Load(conf).Element("loader");
-            var typ = Assembly.GetExecutingAssembly().GetType(loader.Element("name").Value);
-            var constructor = typ.GetConstructor(Enumerable.Repeat(typeof(string), loader.Element("args").Elements("arg").Count()).ToArray());
-            var posDict = new Dictionary<string, int>();
-            foreach (var p in constructor.GetParameters())
+            switch (loader.Element("name").Value)
             {
-                posDict[p.Name] = p.Position;
+                case "Local":
+                    return new LocalTicketLoader(loader.XPathSelectElement("//loader/args/arg[@name='file-path']").Value);
+                case "Redmine":
+                    var args = loader.XPathSelectElement("//loader/args");
+                    return new RedmineTicketLoader(
+                        args.XPathSelectElement("//arg[@name='access-key']").Value,
+                        args.XPathSelectElement("//arg[@name='base-url']").Value,
+                        args.XPathSelectElement("//arg[@name='project-id']").Value);
+                case "Github":
+                    return new GithubTicketLoader(loader.XPathSelectElement("//loader/args/arg[@name='project-id']").Value);
             }
-            var args = new object[posDict.Count];
-            foreach (var n in loader.Element("args").Elements("arg"))
-            {
-                var pos = posDict[n.Attribute("name").Value];
-                var source = n.Attribute("source");
-                args[pos] = GetValue(n, source);
-            }
-            return (ITicketLoader)constructor.Invoke(args);
+            throw new Exception(string.Format("{0} is invalid ticket loader.", loader.Element("name")));
         }
 
         private static object GetValue(XElement node, XAttribute source)

@@ -19,6 +19,7 @@ using System.Collections.Generic;
 using Mistilteinn.Configs;
 using System.Linq;
 using System.Windows.Forms;
+using System.Xml.Linq;
 
 namespace Mistilteinn
 {
@@ -213,13 +214,25 @@ namespace Mistilteinn
         void ShowConfigWindow()
         {
             var config = new ConfigWindow();
-            config.DataContext = new ConfigViewModel(new Models.Config
-            {
-            });
+            config.DataContext = Load();
             var result = config.ShowDialog();
             
-            if (result.HasValue)
-                MessageBox.Show(result.Value.ToString());
+            if (result.HasValue && result.Value)
+                Save((ConfigViewModel)config.DataContext);
+        }
+
+        private ConfigViewModel Load()
+        {
+            var conf = Path.Combine(ApplicationInfo.RootDir, "tools-conf", "mistilteinn", "config");
+            var loader = XElement.Load(conf).Element("loader");
+            return new ConfigViewModel(loader);
+        }
+
+        private void Save(ConfigViewModel configViewModel)
+        {
+            var conf = Path.Combine(ApplicationInfo.RootDir, "tools-conf", "mistilteinn", "config");
+            var xml = configViewModel.TicketLoaderXml;
+            new XElement("config", xml).Save(conf);
         }
         #endregion
 

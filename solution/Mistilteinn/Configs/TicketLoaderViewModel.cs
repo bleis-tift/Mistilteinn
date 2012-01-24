@@ -8,14 +8,14 @@ using Mistilteinn.Models;
 using System.Windows.Media.Imaging;
 using System.Reflection;
 using Microsoft.Win32;
+using System.Xml.Linq;
 
 namespace Mistilteinn.Configs
 {
-    public class TicketLoaderViewModel : ViewModelBase<TicketLoaderViewModel>
+    public abstract class TicketLoaderViewModel : ViewModelBase<TicketLoaderViewModel>
     {
         public string DisplayName { get; set; }
         public Type Type { get; set; }
-
 
         BitmapImage icon;
         public BitmapImage Icon { get { return icon; } set 
@@ -33,6 +33,8 @@ namespace Mistilteinn.Configs
             var dn = (DisplayNameAttribute)this.Type.GetCustomAttributes(false).Single(ca => ca is DisplayNameAttribute);
             DisplayName = dn.DisplayName;
         }
+
+        public abstract XElement ToXml();
     }
 
     public class RedmineTicketLoaderViewModel : TicketLoaderViewModel
@@ -41,11 +43,22 @@ namespace Mistilteinn.Configs
         public string BaseUrl { get; set; }
         public string ProjectId { get; set; }
 
-        public RedmineTicketLoaderViewModel()
+        public static readonly RedmineTicketLoaderViewModel Instance = new RedmineTicketLoaderViewModel();
+        RedmineTicketLoaderViewModel()
             : base(typeof(RedmineTicketLoader))
         {
             var logo = new BitmapImage(new Uri("pack://application:,,,/Mistilteinn;component/Resources/redmine.png"));
             Icon = logo;
+        }
+
+        public override XElement ToXml()
+        {
+            return new XElement("loader",
+                new XElement("name", "Redmine"),
+                new XElement("args",
+                    new XElement("arg", new XAttribute("name", "access-key"), AccessKey),
+                    new XElement("arg", new XAttribute("name", "base-url"), BaseUrl),
+                    new XElement("arg", new XAttribute("name", "project-id"), ProjectId)));
         }
     }
 
@@ -77,11 +90,20 @@ namespace Mistilteinn.Configs
             }
         }
 
-        public LocalTicketLoaderViewModel()
+        public static readonly LocalTicketLoaderViewModel Instance = new LocalTicketLoaderViewModel();
+        LocalTicketLoaderViewModel()
             : base(typeof(LocalTicketLoader))
         {
             var logo = new BitmapImage(new Uri("pack://application:,,,/Mistilteinn;component/Resources/local.png"));
             Icon = logo;
+        }
+
+        public override XElement ToXml()
+        {
+            return new XElement("loader",
+                new XElement("name", "Local"),
+                new XElement("args",
+                    new XElement("arg", new XAttribute("name", "file-path"), TicketFilePath)));
         }
     }
 
@@ -89,11 +111,20 @@ namespace Mistilteinn.Configs
     {
         public string ProjectId { get; set; }
 
-        public GithubTicketLoaderViewModel()
+        public static readonly GithubTicketLoaderViewModel Instance = new GithubTicketLoaderViewModel();
+        GithubTicketLoaderViewModel()
             : base(typeof(GithubTicketLoader))
         {
             var logo = new BitmapImage(new Uri("pack://application:,,,/Mistilteinn;component/Resources/github.png"));
             Icon = logo;
+        }
+
+        public override XElement ToXml()
+        {
+            return new XElement("loader",
+                new XElement("name", "Github"),
+                new XElement("args",
+                    new XElement("arg", new XAttribute("name", "project-id"), ProjectId)));
         }
     }
 }

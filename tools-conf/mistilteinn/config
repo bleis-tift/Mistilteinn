@@ -1,19 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
 <config>
-    <loader>
-        <name>Mistilteinn.Models.GithubTicketLoader</name>
-        <args>
-            <arg name="project">bleis-tift/Mistilteinn</arg>
-        </args>
-    </loader>
-    <!--
-    <loader>
-        <name>Mistilteinn.Models.RedmineTicketLoader</name>
-        <args>
-            <arg name="accessKey" source="file">accesskey</arg>
-            <arg name="accessKey" source="appdata">accesskey</arg>
-            <arg name="baseUrl">http://rdm/</arg>
-            <arg name="projectId">otrproject00353</arg>
-        </args>
-    </loader>
-    -->
+  <loader>
+    <name>Local</name>
+    <args>
+      <arg name="file-path">C:\Users\bleis-tift\Documents\fs\ticket.txt</arg>
+    </args>
+  </loader>
 </config>

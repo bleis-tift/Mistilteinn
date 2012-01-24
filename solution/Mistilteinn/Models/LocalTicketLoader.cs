@@ -10,17 +10,17 @@ namespace Mistilteinn.Models
     [DisplayName("Local")]
     public class LocalTicketLoader : ITicketLoader
     {
-        readonly string ticketFilePath;
+        readonly string filePath;
 
-        public LocalTicketLoader(string ticketFilePath)
+        public LocalTicketLoader(string filePath)
         {
-            this.ticketFilePath = ticketFilePath;
+            this.filePath = filePath;
         }
 
         public IEnumerable<Ticket> Load(string currentBranch)
         {
             var tickets = new List<Ticket>();
-            using (var stream = new StreamReader(ticketFilePath, Encoding.UTF8))
+            using (var stream = new StreamReader(filePath, Encoding.UTF8))
             {
                 Ticket pre = null;
                 string line = "";
